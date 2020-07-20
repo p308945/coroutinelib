@@ -1,7 +1,7 @@
 #include <string.h>
 #include "ctx_swap.h"
 
-static void routineFunc(stroutine *co, void *)
+static void routineFunc(stroutine *co)
 {
 	if (co->pfn)
 	{
@@ -9,7 +9,7 @@ static void routineFunc(stroutine *co, void *)
 	}
 }
 
-int ctx_make(coctx_t *ctx, pfn_co_routine_t pfn, const void *s, const void *s1)
+int ctx_make(coctx_t *ctx, pfn_co_routine_t pfn)
 {
 	char *sp = ctx->ss_sp + ctx->ss_size;
 	sp = (char *)((unsigned long)sp & -16LL);
@@ -18,20 +18,18 @@ int ctx_make(coctx_t *ctx, pfn_co_routine_t pfn, const void *s, const void *s1)
 	*ret_addr = (void *)pfn;
 	ctx->regs[kRSP] = sp;
 	ctx->regs[kRETAddr] = (char *)pfn;
-	ctx->regs[kRDI] = (char *)s;
-	ctx->regs[kRSI] = (char *)s1;
 	return 0;
 }
 
 
-stroutine *co_init(pfn_co_routine_t pfn, int stack_size, void *arg1, void *arg2)
+stroutine *co_init(pfn_co_routine_t pfn, int stack_size)
 {
 	stroutine *pc = (stroutine *)malloc(sizeof(stroutine));
 	memset(pc, 0, sizeof(stroutine));
 	pc->pfn = pfn;
 	pc->ctx.ss_size = stack_size;
 	pc->ctx.ss_sp = (char *)malloc(stack_size);
-	ctx_make(&(pc->ctx), pfn, arg1, arg2);
+	ctx_make(&(pc->ctx), pfn);
 	return pc;
 }
 
