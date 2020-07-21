@@ -1,2 +1,2 @@
 # co_swap
-routine swap
+routine lib
