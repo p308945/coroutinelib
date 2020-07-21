@@ -47,7 +47,7 @@ struct stroutine
 
 int ctx_make(coctx_t *ctx, pfn_co_routine_t pfn);
 
-void co_resume(stroutine *cur, stroutine *next)
+void co_resume(stroutine *cur, stroutine *next);
 
 stroutine *co_init(pfn_co_routine_t pfn, void *arg = NULL, int stack_size = 128 * 1024);
 void co_destroy(stroutine *co);
