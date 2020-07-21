@@ -12,4 +12,4 @@ test.copool : test.copool.cpp coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
 	g++ -std=c++0x coctx_swap.S ctx_swap.cpp coroutine_pool.cpp test.copool.cpp -g -o test.copool
 
 clean :
-	rm -rf test.symmetric test.asymmetric
+	rm -rf test.symmetric test.asymmetric test.copool
