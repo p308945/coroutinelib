@@ -8,8 +8,8 @@
 
 void fun()
 {
-	char buf[600 * 1024] = {0};
-	buf[0] = 1;
+	//char buf[600 * 1024] = {0};
+	//buf[0] = 1;
 	//std::cerr << "in fun " << std::endl;
 }
 
