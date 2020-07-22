@@ -8,14 +8,15 @@
 
 void fun()
 {
+	char buf[600 * 1024] = {0};
+	buf[0] = 1;
 	//std::cerr << "in fun " << std::endl;
 }
 
 int main()
 {
 	std::cerr << "in main" << std::endl;
-	std::function<void(void)>f = std::bind(fun);
-	f();
+	InitCoWorkerPool();
 	struct timeval tv_begin;
 	struct timeval tv_end;
 	gettimeofday(&tv_begin, NULL);
