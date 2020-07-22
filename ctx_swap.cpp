@@ -20,7 +20,7 @@ static int ctx_make(stroutine *pc, pfn_co_routine_t pfn)
 	void **ret_addr = (void **)(sp);
 	*ret_addr = (void *)pfn;
 	ctx->regs[kRDI] = pc->arg;
-	ctx->regs[kRSP] = sp;
+	ctx->regs[kRSP] = sp - 2 * sizeof(void *);
 	ctx->regs[kRETAddr] = (char *)pfn;
 	return 0;
 }
