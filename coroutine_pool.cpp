@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/mman.h>
+#include <string.h>
 #include "coroutine_pool.h"
 #include "ctx_swap.h"
 
@@ -79,20 +80,21 @@ static void freeRss(char *stack_sp)
 	if (ret != 0)
 	{
 		//log error
-		fprintf(stderr, "mincore fail ret = %d\n", ret);
+		fprintf(stderr, "mincore fail ret = %d, errno = %d\n", ret, errno);
 		return;
 	}
 
 	if ((vec[0] & 0x1) == 0)
 	{
-		return;
+//		return;
 	}
 
-	ret = madvise(stack_sp, g_coworker_pool.mFreeSize, MADV_DONTNEED);
+	pageStart = (void *)((long long)stack_sp & ~(pageSize - 1));
+	ret = madvise(pageStart, g_coworker_pool.mFreeSize, MADV_DONTNEED);
 	if (ret != 0)
 	{
 		//log error
-		fprintf(stderr, "miadvice fail ret = %d\n", ret);
+		fprintf(stderr, "miadvice fail ret = %d, errno = %d\n", ret, errno);
 		return;
 	}
 
@@ -126,6 +128,12 @@ void ProcessByCoWorker(std::function<void(void)> func)
 		worker = new CoWorker();
 		stroutine *worker_routine = co_init(worker_main, worker, default_stack_size);
 		worker->mpCo = worker_routine;
+
+		/*
+		long pageSize = sysconf(_SC_PAGESIZE);
+		void* pageStart = (void *)((long long)worker->mpCo->ctx.ss_sp & ~(pageSize - 1));
+		int	ret = madvise(pageStart, g_coworker_pool.mFreeSize, MADV_DONTNEED);
+		*/
 	}
 	else
 	{
