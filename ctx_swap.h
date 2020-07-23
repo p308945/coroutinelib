@@ -53,5 +53,6 @@ stroutine *co_init(pfn_co_routine_t pfn, void *arg = NULL, int stack_size = 128 
 void co_destroy(stroutine *co);
 void co_yield(stroutine *cur);
 void co_resume(stroutine *nco);
+stroutine *co_getcur();
 
 #endif
