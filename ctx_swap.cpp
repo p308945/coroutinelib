@@ -2,6 +2,7 @@
 #include "ctx_swap.h"
 
 static stroutine mainCo;
+static stroutine* pCur = &mainCo;
 
 static void routineFunc(stroutine *co)
 {
@@ -45,6 +46,7 @@ extern "C"
 
 void co_resume(stroutine *cur, stroutine *next)
 {
+	pCur = next;
 	coctx_swap(&(cur->ctx), &(next->ctx));
 }
 
@@ -70,4 +72,9 @@ void co_yield(stroutine *cur)
 void co_resume(stroutine *nco)
 {
 	co_resume(&mainCo, nco);
+}
+
+stroutine *co_getcur()
+{
+	return pCur;
 }
