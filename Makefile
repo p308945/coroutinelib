@@ -13,7 +13,7 @@ test.copool : test.copool.cpp coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
 
 libcoroutine.a : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
 	g++ -c -std=c++0x coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
-	ar cr $@ ctx_swap.o coroutine_pool.o
+	ar cr $@ ctx_swap.o coroutine_pool.o coctx_swap.o
 
 libcoroutine.so : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
 	g++ -std=c++0x -shared -fPIC coctx_swap.S ctx_swap.cpp coroutine_pool.cpp -o $@
