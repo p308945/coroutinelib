@@ -19,6 +19,8 @@ struct CoTask;
 
 void coroutine_sleep(CoTask *task, int ms);
 
+bool coroutine_sleep2(int ms);
+
 struct CoTaskTimerElem
 {
 	CoTaskTimerElem() : mCallbackID(-1), mTimeOut(0) {}
