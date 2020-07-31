@@ -11,12 +11,12 @@ test.asymmetric : test.asymmetric.cpp coctx_swap.S ctx_swap.cpp coroutine_pool.c
 test.copool : test.copool.cpp coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
 	g++ -std=c++0x coctx_swap.S ctx_swap.cpp coroutine_pool.cpp test.copool.cpp -g -o test.copool
 
-libcoroutine.a : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
-	g++ -c -std=c++0x coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
-	ar cr $@ ctx_swap.o coroutine_pool.o coctx_swap.o
+libcoroutine.a : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp coroutine_mgr.cpp
+	g++ -c -std=c++0x coctx_swap.S ctx_swap.cpp coroutine_pool.cpp coroutine_mgr.cpp
+	ar cr $@ ctx_swap.o coroutine_pool.o coctx_swap.o coroutine_mgr.o
 
-libcoroutine.so : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp
-	g++ -std=c++0x -shared -fPIC coctx_swap.S ctx_swap.cpp coroutine_pool.cpp -o $@
+libcoroutine.so : coctx_swap.S ctx_swap.cpp coroutine_pool.cpp coroutine_mgr.cpp
+	g++ -std=c++0x -shared -fPIC coctx_swap.S ctx_swap.cpp coroutine_pool.cpp coroutine_mgr.cpp -o $@
 
 tags :
 	ctags -R *
