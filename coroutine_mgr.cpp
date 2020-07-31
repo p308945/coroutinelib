@@ -38,6 +38,20 @@ void coroutine_sleep(CoTask *task, int ms)
 	co_yield(task->mCo);
 }
 
+bool coroutine_sleep2(int ms)
+{
+    CoTask *task = CoroutineAsyncMap::GetInstance().Alloc();
+    if (NULL == task)
+    {
+        fprintf(stderr, "alloc task fail");
+        return false;
+    }
+    CoTaskTimerElem elem(task->mCallbackID, CoroutineAsyncMap::GetInstance().GetCurMs() + ms);
+    CoroutineAsyncMap::GetInstance().AddTimer(elem);
+    co_yield(task->mCo);
+    CoroutineAsyncMap::GetInstance().Free(task);
+    return true;
+}
 
 CoroutineAsyncMap::CoroutineAsyncMap()
 {
